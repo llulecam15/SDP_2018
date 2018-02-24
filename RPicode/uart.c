@@ -114,10 +114,10 @@ int main (int argc, char * argv[]){
 	  printf("%s	%s%c", strResponse, rxbuffer, 10);
 	  fclose(ft);
 
-	  if (mysql_query(&mysql, "load data local infile 'uartText.txt' into table gas_meter_two") != 0){
+	 /* if (mysql_query(&mysql, "load data local infile 'uartText.txt' into table gas_meter_two") != 0){
 		  printf("fail to load\n");
 		  return 0;
-	  }
+	  }*/
 	 
 	}
 
