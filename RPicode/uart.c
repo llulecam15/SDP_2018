@@ -28,9 +28,9 @@ int main (int argc, char * argv[]){
 
   char* dev_id = "/dev/serial0"; // UART device identifier
   //char* str = "Hello World"; // Data to be transmitted
-  char rxbuffer[2]; // Receive data buffer
-  rxbuffer[0] = '\0';
-  rxbuffer[1] = '\0';
+  char rxbuffer; // Receive data buffer
+ 
+
 
 
   int period;
@@ -71,13 +71,17 @@ int main (int argc, char * argv[]){
   //Setting up the txt file for writing. 
   FILE *ft;
   //DATA BASE CONNECTION CODE 
-  
+  char mbuff[16];
+  int index;
+  int Bflag;
+  int Eflag;
+  long int gData;
 	
   
   while(1){
 
 	//DATABASE CONNECT TO COde  
-  MYSQL mysql;
+ /* MYSQL mysql;
   
   mysql_init(&mysql);
   if (!mysql_real_connect(&mysql,
@@ -90,20 +94,42 @@ int main (int argc, char * argv[]){
 			 0)){
 			 fprintf(stderr, "Failed to connect to database: Error: %s\n", mysql_error(&mysql));
 			 return 0;
-  }
+  }*/
 
-	  int read_bytes = read(fd, &rxbuffer[0],2);
-  
-	  if (read_bytes < 0){
-		  perror("Read");
-		  return -1;
-	  } 
 	  
-	if (read_bytes > 0){ 
-		printf("received bytes %d \n",read_bytes);
+	  while( read(fd, &rxbuffer, 1) > 0){
+		  if (rxbuffer == 'A'){
+			  Bflag = 1;
+			  index = 0;
+			  mbuff[index] = '\0';
 
-	  ft = fopen ("uartTest.txt", "a+");
-	  if (ft == NULL){
+		  } else if (rxbuffer ==  'a'){
+			  Eflag = 1;
+			 break; 
+
+		  } else{
+			  if (index < 17){
+				  mbuff[index] = rxbuffer;
+				  index++;
+				  mbuff[index] = '\0';
+			  }
+		  }
+
+	  }
+
+	  if (Bflag && Eflag){
+		  gData = atol(mbuff);
+		  printf("Received: %ld\n", gData);
+		 // printf("Bflag: %d Eflag: %d\n", Bflag, Eflag);
+		  index = 0;
+		  mbuff[index] = '\0';
+		  Bflag = 0;
+		  Eflag= 0;
+	  }
+
+	       
+	 /*       ft = fopen ("uartTest.txt", "a+");
+	      if (ft == NULL){
 		  printf("Error! Opening file\n");
 		  return -1;
 	  }
@@ -112,16 +138,13 @@ int main (int argc, char * argv[]){
 	  strftime(strResponse, 128, "%Y-%m-%d %H:%M:%S", timeinfo);
 	  fprintf(ft, "%s	%s%c", strResponse, rxbuffer, 10);
 	  printf("%s	%s%c", strResponse, rxbuffer, 10);
-	  fclose(ft);
+	  fclose(ft);*/
+	  
 
-	 /* if (mysql_query(&mysql, "load data local infile 'uartText.txt' into table gas_meter_two") != 0){
-		  printf("fail to load\n");
-		  return 0;
-	  }*/
-	 
-	}
 
-   mysql_close(&mysql);	        
+
+
+  // mysql_close(&mysql);	        
   }
   
   close(fd);

@@ -24,14 +24,14 @@ int main(int argc, char *argv[]){
 	}
 	
 	/*Creat table */
-	if (mysql_query(&mysql, "create table networktwo(IP varchar(20), primary key (IP))") != 0){
+	/*if (mysql_query(&mysql, "create table networktwo(IP varchar(20), primary key (IP))") != 0){
 		
 	printf("Failed to create\n");
-	return 0;
-	}
+	return 0;;
+	}*/
 
 
-	if (mysql_query(&mysql, "load data local infile 'sqlTest.txt' into table gas_meter_one") != 0 ){
+	if (mysql_query(&mysql, "load data local infile 'NewF.txt' into table gas_mete_two") != 0 ){
 		printf("failed to load\n");
 		return 0;
 	}
