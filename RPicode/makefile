@@ -1,4 +1,4 @@
-all: sqlConnection
+all: OneTransmission
 
 CFLAGS = -lwiringPi -L/usr/lib/mysql -lmysqlclient -o 
 CC = gcc

@@ -81,7 +81,7 @@ int main (int argc, char * argv[]){
   while(1){
 
 	//DATABASE CONNECT TO COde  
- /* MYSQL mysql;
+ MYSQL mysql;
   
   mysql_init(&mysql);
   if (!mysql_real_connect(&mysql,
@@ -94,11 +94,11 @@ int main (int argc, char * argv[]){
 			 0)){
 			 fprintf(stderr, "Failed to connect to database: Error: %s\n", mysql_error(&mysql));
 			 return 0;
-  }*/
+  }
 
 	  
 	  while( read(fd, &rxbuffer, 1) > 0){
-		  printf("R: %c", rxbuffer);
+		  //printf("R: %c", rxbuffer);
 		  if (rxbuffer == '<'){
 			  Bflag = 1;
 			  index = 0;
@@ -117,18 +117,29 @@ int main (int argc, char * argv[]){
 		  }
 
 	  }
+	  rawtime = time(NULL);
+	  timeinfo = localtime(&rawtime);
+	  strftime(strResponse, 128, "%Y-%m-%d %H:%M:%S", timeinfo);
+	  //fprintf(ft, "%s	%s%c", strResponse, rxbuffer, 10);
 
 	  if (Bflag && Eflag){
 		  gData = atol(mbuff);
-		  /*ft = fopen ("1Byte.txt", "a+");
+		  ft = fopen ("grSQL.txt", "w");
 	      if (ft == NULL){
 			printf("Error! Opening file\n");
 			return -1;
 	      }
 	      
-		  fprintf(ft, "%ld%c", gData, 10);
-		  fclose(ft);*/
-		  //printf("%ld\n", gData);
+		  fprintf(ft, "%s	%ld%c", strResponse, gData, 10);
+		  fclose(ft);
+		  printf("%ld\n", gData);
+		  if (mysql_query(&mysql, "load data local infile 'grSQL.txt' into table gas_meter_twot") != 0 ){
+		  printf("failed to load\n");
+		  return 0;
+	}
+	printf("success Loading\n");
+
+	mysql_close(&mysql);
 		  index = 0;
 		  mbuff[index] = '\0';
 		  Bflag = 0;
