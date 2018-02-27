@@ -1,7 +1,11 @@
-all: uart
+all: sqlConnection
 
 CFLAGS = -lwiringPi -L/usr/lib/mysql -lmysqlclient -o 
 CC = gcc
+
+OneTransmission: OneTransmission.c
+	$(CC) $(CFLAGS) OneTransmission OneTransmission.c
+	sudo ./OneTransmission
 
 uart: uart.c
 	$(CC) $(CFLAGS) uart uart.c

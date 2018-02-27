@@ -31,7 +31,7 @@ int main(int argc, char *argv[]){
 	}*/
 
 
-	if (mysql_query(&mysql, "load data local infile 'NewF.txt' into table gas_mete_two") != 0 ){
+	if (mysql_query(&mysql, "load data local infile 'NewF.txt' into table gas_meter_one") != 0 ){
 		printf("failed to load\n");
 		return 0;
 	}

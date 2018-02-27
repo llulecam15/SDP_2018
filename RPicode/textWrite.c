@@ -16,7 +16,7 @@ int num;
 struct tm *timeinfo;
 time_t rawtime;
 char strResponse[128];
-for(num = 0; num < 12; num = num + 1){
+for(num = 0; num < 11; num = num + 1){
 delay(1000);
 rawtime = time(NULL);
 timeinfo = localtime(&rawtime);

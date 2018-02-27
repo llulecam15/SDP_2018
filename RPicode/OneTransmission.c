@@ -71,13 +71,10 @@ int main (int argc, char * argv[]){
   //Setting up the txt file for writing. 
   FILE *ft;
   //DATA BASE CONNECTION CODE 
-  char mbuff[10];
-  char IDbuff[7];
-  int mIndex = 0;
-  int IDindex = 0;
-  int Bflag = 0;
-  int Eflag = 0;
-  int IDflag = 0;
+  char mbuff[16];
+  int index;
+  int Bflag;
+  int Eflag;
   long int gData;
 	
   
@@ -99,42 +96,23 @@ int main (int argc, char * argv[]){
 			 return 0;
   }*/
 
-	  //Receiving Data from the UART
+	  
 	  while( read(fd, &rxbuffer, 1) > 0){
-		  //printf("Byte On Buff %c\n", rxbuffer);
-		  //Begin message. 
+		  printf("R: %c", rxbuffer);
 		  if (rxbuffer == '<'){
-			  
-			  //Set flags
 			  Bflag = 1;
-			  IDflag = 1;
-			  IDindex = 0;
-			  IDbuff[IDindex] = '\0';
-			  
-             
-		  } else if (rxbuffer ==  '>'){ //END OF MESSAGE
-			 Eflag = 1;
+			  index = 0;
+			  mbuff[index] = '\0';
+
+		  } else if (rxbuffer ==  '>'){
+			  Eflag = 1;
 			 break; 
 
-		  } else if((rxbuffer == '/') && IDflag){ //end of ID
-			  IDflag = 0; 
-			  IDbuff[IDindex] = '\0';
-		      //Init & clear index and buff message.   
-			  mIndex = 0; 
-			  mbuff[mIndex] = '\0';
-			  
-		  } else if (Bflag && !IDflag){ 
-			  //Receiving message. 
-			  if (mIndex < 11){
-				  mbuff[mIndex] = rxbuffer;
-				  mIndex++;
-				  mbuff[mIndex] = '\0';
-			  }
-		  } else if (Bflag && IDflag){ //Receiving ID. 
-			  if (IDindex < 8){
-				  IDbuff[IDindex] = rxbuffer;
-				  IDindex++;
-				  IDbuff[IDindex] = '\0';
+		  } else{
+			  if (index < 17){
+				  mbuff[index] = rxbuffer;
+				  index++;
+				  mbuff[index] = '\0';
 			  }
 		  }
 
@@ -142,25 +120,23 @@ int main (int argc, char * argv[]){
 
 	  if (Bflag && Eflag){
 		  gData = atol(mbuff);
-	      /*rawtime = time(NULL);
-		  timeinfo = localtime(&rawtime);
-		  strftime(strResponse, 128, "%Y-%m-%d %H:%M:%S", timeinfo);*/
-		  ft = fopen ("Short.txt", "a+");
+		  /*ft = fopen ("1Byte.txt", "a+");
 	      if (ft == NULL){
 			printf("Error! Opening file\n");
 			return -1;
 	      }
-		  fprintf(ft, "%s	%s%c", IDbuff, mbuff, 10);
-		  fclose(ft);
-		  mIndex = 0;
-		  mbuff[mIndex] = '\0';
+	      
+		  fprintf(ft, "%ld%c", gData, 10);
+		  fclose(ft);*/
+		  //printf("%ld\n", gData);
+		  index = 0;
+		  mbuff[index] = '\0';
 		  Bflag = 0;
 		  Eflag= 0;
-		  printf("+\n");
 	  }
 
 	       
-	 /*   ft = fopen ("uartTest.txt", "a+");
+	 /*    ft = fopen ("uartTest.txt", "a+");
 	      if (ft == NULL){
 		  printf("Error! Opening file\n");
 		  return -1;
