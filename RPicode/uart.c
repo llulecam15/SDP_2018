@@ -80,24 +80,12 @@ int main (int argc, char * argv[]){
   int IDflag = 0;
   long int gData;
 	
+	
+
   
   while(1){
 
-	//DATABASE CONNECT TO COde  
- /* MYSQL mysql;
-  
-  mysql_init(&mysql);
-  if (!mysql_real_connect(&mysql,
-			 "128.114.9.90",
-			 "sdpteam",
-			 "goUCSC1234",
-			 "sdp",
-			 3306,
-			 NULL,
-			 0)){
-			 fprintf(stderr, "Failed to connect to database: Error: %s\n", mysql_error(&mysql));
-			 return 0;
-  }*/
+
 
 	  //Receiving Data from the UART
 	  while( read(fd, &rxbuffer, 1) > 0){
@@ -141,23 +129,56 @@ int main (int argc, char * argv[]){
 	  }
 
 	  if (Bflag && Eflag){
+		  //DATABASE CONNECT TO COde  
+			MYSQL mysql;
+  
+			mysql_init(&mysql);
+			if (!mysql_real_connect(&mysql,
+						"128.114.9.90",
+						"sdpteam",
+						"goUCSC1234",
+						"sdp",
+						3306,
+						NULL,
+						0)){
+				fprintf(stderr, "Failed to connect to database: Error: %s\n", mysql_error(&mysql));
+				return 0;
+				}	
+				
 		  gData = atol(mbuff);
-	      /*rawtime = time(NULL);
+	      rawtime = time(NULL);
 		  timeinfo = localtime(&rawtime);
-		  strftime(strResponse, 128, "%Y-%m-%d %H:%M:%S", timeinfo);*/
-		  ft = fopen ("DifDistance.txt", "w");
+		  strftime(strResponse, 128, "%Y-%m-%d %H:%M:%S", timeinfo);
+		  ft = fopen ("FullOneG.txt", "w");
 	      if (ft == NULL){
 			printf("Error! Opening file\n");
 			return -1;
 	      }
-		  fprintf(ft, "%s	%s%c", IDbuff, mbuff, 10);
-		  printf("%s	%s\n", IDbuff, mbuff);
+		  fprintf(ft, "%s	%ld%c", strResponse, gData, 10);
+		  
 		  fclose(ft);
 		  mIndex = 0;
 		  mbuff[mIndex] = '\0';
 		  Bflag = 0;
 		  Eflag= 0;
-		  //printf("+\n");
+		  long int id;
+		  id = atol(IDbuff);
+		  if (id == 30503){
+			if (mysql_query(&mysql, "load data local infile 'FullOneG.txt' into table meter_30503") != 0 ){
+				printf("failed to load\n");
+				return 0;
+			}
+			printf("G30503 %s	%ld%c", strResponse, gData, 10);
+		}else {
+			 if (mysql_query(&mysql, "load data local infile 'FullOneG.txt' into table meter_21523") != 0 ){
+				printf("failed to load\n");
+				return 0;
+			 }
+			 printf("G21523 %s	%ld%c", strResponse, gData, 10);
+		 }
+		 
+	
+		 mysql_close(&mysql);   
 	  }
 
 	       
@@ -179,6 +200,6 @@ int main (int argc, char * argv[]){
 
   // mysql_close(&mysql);	        
   }
-  
+ 
   close(fd);
 }
