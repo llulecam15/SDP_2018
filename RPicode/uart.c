@@ -145,18 +145,19 @@ int main (int argc, char * argv[]){
 	      /*rawtime = time(NULL);
 		  timeinfo = localtime(&rawtime);
 		  strftime(strResponse, 128, "%Y-%m-%d %H:%M:%S", timeinfo);*/
-		  ft = fopen ("Short.txt", "a+");
+		  ft = fopen ("DifDistance.txt", "w");
 	      if (ft == NULL){
 			printf("Error! Opening file\n");
 			return -1;
 	      }
 		  fprintf(ft, "%s	%s%c", IDbuff, mbuff, 10);
+		  printf("%s	%s\n", IDbuff, mbuff);
 		  fclose(ft);
 		  mIndex = 0;
 		  mbuff[mIndex] = '\0';
 		  Bflag = 0;
 		  Eflag= 0;
-		  printf("+\n");
+		  //printf("+\n");
 	  }
 
 	       
