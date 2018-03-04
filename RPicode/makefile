@@ -1,4 +1,4 @@
-all: uart
+all: sqlConnection
 
 CFLAGS = -lwiringPi -L/usr/lib/mysql -lmysqlclient -o 
 CC = gcc
@@ -18,6 +18,10 @@ sqlConnection: sqlConnection.c
 textWrite: textWrite.c
 	$(CC) $(CFLAGS) textWrite textWrite.c
 	sudo ./textWrite
+	
+FullHandle: FullHandle.c
+	$(CC) $(CFLAGS) FullHandle FullHandle.c
+	sudo ./FullHandle
 
 clean:
 	rm *.o all
