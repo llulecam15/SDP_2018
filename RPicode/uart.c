@@ -88,6 +88,7 @@ int main (int argc, char * argv[]){
 
 
 	  //Receiving Data from the UART
+	  
 	  while( read(fd, &rxbuffer, 1) > 0){
 		  //printf("Byte On Buff %c\n", rxbuffer);
 		  //Begin message. 
@@ -168,13 +169,13 @@ int main (int argc, char * argv[]){
 				printf("failed to load\n");
 				return 0;
 			}
-			printf("G30503 %s	%ld%c", strResponse, gData, 10);
+			printf("G%ld %s	%ld%c", id, strResponse, gData, 10);
 		}else {
 			 if (mysql_query(&mysql, "load data local infile 'FullOneG.txt' into table meter_21523") != 0 ){
 				printf("failed to load\n");
 				return 0;
 			 }
-			 printf("G21523 %s	%ld%c", strResponse, gData, 10);
+			 printf("G%ld %s	%ld%c", id, strResponse, gData, 10);
 		 }
 		 
 	

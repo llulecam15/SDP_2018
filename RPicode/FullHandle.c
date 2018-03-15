@@ -1,6 +1,7 @@
 //*****************************************************************************
 //File name: FullHandle. 
 // Program to process gas meter data and upload to MySQL
+//March 10, 2018. Code Modified to write to txt instead of uplaoding. 
 //Format of incoming messages <id0 id1 id2 id3 id4 / d0 d1 d2 d3>
 // To compile "gcc -o FullHandle FullHandle.c -lwiringPi -L/usr/lib/mysql -lmysqlclient"
 // to run "sudo ./FullHandle"
@@ -92,7 +93,7 @@ int main (int argc, char * argv[]){
 
 	  //Receiving Data from the UART
 	  while( read(fd, &rxbuffer, 1) > 0){
-		  //printf("Byte On Buff %c\n", rxbuffer);
+		  printf("Byte On Buff %c\n", rxbuffer);
 		  //Begin message. 
 		  if (rxbuffer == '<'){
 			  
@@ -132,56 +133,38 @@ int main (int argc, char * argv[]){
 	  }
 
 	  if (Bflag && Eflag){
-		  //DATABASE CONNECT TO COde  
-			MYSQL mysql;
-  
-			mysql_init(&mysql);
-			if (!mysql_real_connect(&mysql,
-						"128.114.9.90",
-						"sdpteam",
-						"goUCSC1234",
-						"sdp",
-						3306,
-						NULL,
-						0)){
-				fprintf(stderr, "Failed to connect to database: Error: %s\n", mysql_error(&mysql));
-				return 0;
-				}	
-				
 		  gData = atol(mbuff);
 	      rawtime = time(NULL);
 		  timeinfo = localtime(&rawtime);
 		  strftime(strResponse, 128, "%Y-%m-%d %H:%M:%S", timeinfo);
-		  ft = fopen ("FullOneG.txt", "w");
-	      if (ft == NULL){
-			printf("Error! Opening file\n");
-			return -1;
-	      }
-		  fprintf(ft, "%s	%ld%c", strResponse, gData, 10);
-		  
-		  fclose(ft);
+		  long int id;
+		  id = atol(IDbuff);
+		  if (id == 42069){
+			  /*ft = fopen ("G23172.txt", "a");
+			  if (ft == NULL){
+				printf("Error! Opening file\n");
+				return -1;
+			  }
+			  fprintf(ft, "%s	%ld%c", strResponse, gData, 10);
+			  fclose(ft);*/
+			  printf("G%ld %s	%ld%c", id, strResponse, gData, 10);			  
+
+		}else {
+			 /* ft = fopen ("G42069.txt", "a");
+			  if (ft == NULL){
+				printf("Error! Opening file\n");
+				return -1;
+			  }
+			  fprintf(ft, "%s	%ld%c", strResponse, gData, 10);
+			  fclose(ft);*/			  
+
+			 printf("G%ld %s	%ld%c", id, strResponse, gData, 10);
+		 }
+		 
 		  mIndex = 0;
 		  mbuff[mIndex] = '\0';
 		  Bflag = 0;
 		  Eflag= 0;
-		  long int id;
-		  id = atol(IDbuff);
-		  if (id == 30503){
-			if (mysql_query(&mysql, "INSERT INTO student_union_building(TimeStamp, Gas_Meter_One) VALUES(strResponse, gData)") != 0 ){
-				printf("failed to load\n");
-				return 0;
-			}
-			printf("G30503 %s	%ld%c", strResponse, gData, 10);
-		}else {
-			 if (mysql_query(&mysql, "INSERT INTO student_union_building(TimeStamp, Gas_Meter_Two) VALUES(strResponse, gData)") != 0 ){
-				printf("failed to load\n");
-				return 0;
-			 }
-			 printf("G21523 %s	%ld%c", strResponse, gData, 10);
-		 }
-		 
-	
-		 mysql_close(&mysql);   
 	  }
         
   }
