@@ -93,7 +93,7 @@ int main (int argc, char * argv[]){
 
 	  //Receiving Data from the UART
 	  while( read(fd, &rxbuffer, 1) > 0){
-		  printf("Byte On Buff %c\n", rxbuffer);
+		  //printf("Byte On Buff %c\n", rxbuffer);
 		  //Begin message. 
 		  if (rxbuffer == '<'){
 			  
@@ -150,13 +150,13 @@ int main (int argc, char * argv[]){
 			  printf("G%ld %s	%ld%c", id, strResponse, gData, 10);			  
 
 		}else {
-			 /* ft = fopen ("G42069.txt", "a");
+			 ft = fopen ("LabTest.txt", "a");
 			  if (ft == NULL){
 				printf("Error! Opening file\n");
 				return -1;
 			  }
 			  fprintf(ft, "%s	%ld%c", strResponse, gData, 10);
-			  fclose(ft);*/			  
+			  fclose(ft);		  
 
 			 printf("G%ld %s	%ld%c", id, strResponse, gData, 10);
 		 }
