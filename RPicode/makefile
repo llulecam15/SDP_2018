@@ -1,4 +1,4 @@
-all: FullHandle
+all: uart
 CFLAGS = -lwiringPi -L/usr/lib/mysql -lmysqlclient -o 
 CC = gcc
 

@@ -164,16 +164,37 @@ int main (int argc, char * argv[]){
 		  Eflag= 0;
 		  long int id;
 		  id = atol(IDbuff);
-		  if (id == 30503){
-			if (mysql_query(&mysql, "load data local infile 'FullOneG.txt' into table meter_30503") != 0 ){
+		  if (id == 11111){
+			if (mysql_query(&mysql, "load data local infile 'FullOneG.txt' into table meter_11111") != 0 ){
 				printf("failed to load\n");
 				return 0;
 			}
 			printf("G%ld %s	%ld%c", id, strResponse, gData, 10);
-		}else {
-			 if (mysql_query(&mysql, "load data local infile 'FullOneG.txt' into table meter_21523") != 0 ){
+			
+		}else if (id == 22222){
+			 if (mysql_query(&mysql, "load data local infile 'FullOneG.txt' into table meter_22222") != 0 ){
 				printf("failed to load\n");
 				return 0;
+			 }
+			 printf("G%ld %s	%ld%c", id, strResponse, gData, 10);
+			 
+		 } else if (id == 33333){
+			 if (mysql_query(&mysql, "load data local infile 'FullOneG.txt' into table meter_33333") != 0 ){
+				 printf("failed to load meter_33333\n");
+				 return 0;
+			 }
+			 printf("G%ld %s	%ld%c", id, strResponse, gData, 10);
+			 
+		 } else if (id == 44444){
+			 if (mysql_query(&mysql, "load data local infile 'FullOneG.txt' into table meter_44444") != 0 ){
+				 printf("failed to load meter_44444\n");
+				 return 0;
+			 }
+			 printf("G%ld %s	%ld%c", id, strResponse, gData, 10);
+		 } else {
+			 if (mysql_query(&mysql, "load data local infile 'FullOneG.txt' into table meter_30503") != 0 ){
+				 printf("Failed to load meter_30503\n");
+				 return 0;
 			 }
 			 printf("G%ld %s	%ld%c", id, strResponse, gData, 10);
 		 }
