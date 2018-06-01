@@ -139,18 +139,18 @@ int main (int argc, char * argv[]){
 		  strftime(strResponse, 128, "%Y-%m-%d %H:%M:%S", timeinfo);
 		  long int id;
 		  id = atol(IDbuff);
-		  if (id == 42069){
-			  /*ft = fopen ("G23172.txt", "a");
+		  if (id == 11111){
+			  ft = fopen ("SUB_G1.txt", "a");
 			  if (ft == NULL){
 				printf("Error! Opening file\n");
 				return -1;
 			  }
 			  fprintf(ft, "%s	%ld%c", strResponse, gData, 10);
-			  fclose(ft);*/
+			  fclose(ft);
 			  printf("G%ld %s	%ld%c", id, strResponse, gData, 10);			  
 
 		}else {
-			 ft = fopen ("LabTest.txt", "a");
+			 ft = fopen ("SUB_G2.txt", "w+");
 			  if (ft == NULL){
 				printf("Error! Opening file\n");
 				return -1;
