@@ -16,6 +16,7 @@
 #include <time.h>
 #include <mysql/mysql.h>
 
+
 #define BAUDRATE B9600 // UART speed
 
 int main (int argc, char * argv[]){
@@ -134,6 +135,9 @@ int main (int argc, char * argv[]){
 			MYSQL mysql;
   
 			mysql_init(&mysql);
+			//This function allows for the use of LOCA
+			mysql_options(&mysql, MYSQL_OPT_LOCAL_INFILE, 0);
+			
 			if (!mysql_real_connect(&mysql,
 						"128.114.9.90",
 						"sdpteam",
@@ -164,23 +168,22 @@ int main (int argc, char * argv[]){
 		  Eflag= 0;
 		  long int id;
 		  id = atol(IDbuff);
-		  printf("G%ld %s	%ld%c", id, strResponse, gData, 10);
-		  if (id == 30503){
-			if (mysql_query(&mysql, "load data local infile 'FullOneG.txt' into table meter_11111") != 0 ){
-				printf("failed to load\n");
+		  if (id == 30201){
+			if (mysql_query(&mysql, "load data local infile 'FullOneG.txt' into table meter_g30201") != 0 ){
+				printf("failed to load meter_11111\n");
 				return 0;
 			}
 			printf("G%ld %s	%ld%c", id, strResponse, gData, 10);
 			
-		}else if (id == 22222){
-			 if (mysql_query(&mysql, "load data local infile 'FullOneG.txt' into table meter_22222") != 0 ){
-				printf("failed to load\n");
+		}else if (id == 30202){
+			 if (mysql_query(&mysql, "load data local infile 'FullOneG.txt' into table meter_g30202") != 0 ){
+				printf("failed to load meter_22222\n");
 				return 0;
 			 }
 			 printf("G%ld %s	%ld%c", id, strResponse, gData, 10);
 			 
-		 } else if (id == 33333){
-			 if (mysql_query(&mysql, "load data local infile 'FullOneG.txt' into table meter_33333") != 0 ){
+		 } else if (id == 37301){
+			 if (mysql_query(&mysql, "load data local infile 'FullOneG.txt' into table meter_g37301") != 0 ){
 				 printf("failed to load meter_33333\n");
 				 return 0;
 			 }
@@ -192,7 +195,7 @@ int main (int argc, char * argv[]){
 				 return 0;
 			 }
 			 printf("G%ld %s	%ld%c", id, strResponse, gData, 10);
-		 } else if (id == 11111) {
+		 } else if (id == 55555) {
 			 if (mysql_query(&mysql, "load data local infile 'FullOneG.txt' into table meter_21523") != 0 ){
 				 printf("Failed to load meter_30503\n");
 				 return 0;
@@ -204,24 +207,7 @@ int main (int argc, char * argv[]){
 		 mysql_close(&mysql);   
 	  }
 
-	       
-	 /*   ft = fopen ("uartTest.txt", "a+");
-	      if (ft == NULL){
-		  printf("Error! Opening file\n");
-		  return -1;
-	  }
-	  rawtime = time(NULL);
-	  timeinfo = localtime(&rawtime);
-	  strftime(strResponse, 128, "%Y-%m-%d %H:%M:%S", timeinfo);
-	  fprintf(ft, "%s	%s%c", strResponse, rxbuffer, 10);
-	  printf("%s	%s%c", strResponse, rxbuffer, 10);
-	  fclose(ft);*/
-	  
-
-
-
-
-  // mysql_close(&mysql);	        
+	      	        
   }
  
   close(fd);

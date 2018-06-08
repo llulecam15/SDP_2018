@@ -32,7 +32,7 @@ int main(int argc, char *argv[]){
   int id;
   long int gData;
   
-		while ( id < 2){
+
 			
 		MYSQL mysql;
 		mysql_init(&mysql);
@@ -53,24 +53,23 @@ int main(int argc, char *argv[]){
           timeinfo = localtime(&rawtime);
 		  strftime(strResponse, 128, "%Y-%m-%d %H:%M:%S", timeinfo);
 		  
-		  
-		  if (id == 0){
-			if (mysql_query(&mysql, "INSERT INTO student_union_building(TimeStamp, Gas_Meter_One) VALUES('2018-03-04 14:23:30' , 123)") != 0 ){
-				printf("failed to load_ Here\n");
-				return 0;
+			/*Creat table */
+			if (mysql_query(&mysql, "create table networktwo(IP varchar(20), primary key (IP))") != 0){
+					
+			printf("Failed to create\n");
+			return 0;;
 			}
-			printf("G30503 %s	%ld%c", strResponse, gData, 10);
-		}else {
-			 if (mysql_query(&mysql, "INSERT INTO student_union_building(TimeStamp, Gas_Meter_Two) VALUES('2018-03-04 14:23:30' , 687)") != 0 ){
-				printf("failed to load\n");
-				return 0;
+
+
+		  
+			 if (mysql_query(&mysql, "load data local infile 'FullOneG.txt' into table meter_33333") != 0 ){
+				 printf("failed to load meter_33333\n");
+				 return 0;
 			 }
-			 printf("G21523 %s	%ld%c", strResponse, gData, 10);
-		 }
 		 
 	
-     id++;
+     
 	mysql_close(&mysql); 
-    }
+    
 return 1;
 }

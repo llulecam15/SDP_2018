@@ -19,6 +19,7 @@
 #include <time.h>
 #include <mysql/mysql.h>
 
+
 #define BAUDRATE B9600 // UART speed
 
 int main (int argc, char * argv[]){
